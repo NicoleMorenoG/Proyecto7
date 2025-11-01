@@ -7,16 +7,19 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-4 py-16 grid md:grid-cols-2 gap-10 items-center">
         <div>
             <h1 className="font-display text-4xl sm:text-5xl text-koi-ink leading-tight">
-            Joyería en <span className="text-koi-gold">plata 925</span> con alma de{" "}
-            <span className="text-koi-amethyst">amatista</span>.
+            Joyería en <span className="text-koi-gold">plata 925</span> hecha a{" "}
+            <span className="text-koi-amethyst">mano</span>.
             </h1>
             <p className="mt-4 text-gray-600">
             Piezas escogidas con intención: perlas, nácar y cuarzos que cuentan historias.
             </p>
             <div className="mt-6 flex gap-3">
-            <Link to="/products" className="px-5 py-3 rounded-xl bg-koi-amethyst text-white shadow-soft hover:opacity-90">
+            <Link
+                to="/products"
+                className="inline-block rounded-xl bg-black px-4 py-2 text-white hover:bg-neutral-800 transition">
                 Ver colección
             </Link>
+
             <Link to="/about" className="px-5 py-3 rounded-xl border hover:bg-white">
                 Conócenos
             </Link>

@@ -1,28 +1,97 @@
 import { useState } from "react";
-import { login } from "../api/auth";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function Login() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState("");
+  const navigate = useNavigate();
 
-    const onSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setErr("");
+    setLoading(true);
     try {
-        const res = await login({ email, password });
-        localStorage.setItem("token", res.token);
-        alert("Login ok ✅");
+      const res = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:4000"}/api/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.msg || "Error al iniciar sesión");
+      // guarda token y user
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      navigate("/profile");
     } catch (e) {
-        alert("Error en login");
-        console.error(e);
+      setErr(e.message);
+    } finally {
+      setLoading(false);
     }
-    };
+  };
 
-    return (
-    <form onSubmit={onSubmit} style={{ maxWidth: 360 }}>
-        <h2>Iniciar sesión</h2>
-        <input placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} style={{display:"block", width:"100%", padding:8, marginBottom:8}} />
-        <input placeholder="Contraseña" type="password" value={password} onChange={(e) => setPassword(e.target.value)} style={{display:"block", width:"100%", padding:8, marginBottom:8}} />
-        <button type="submit" style={{ padding:"8px 12px" }}>Entrar</button>
-    </form>
-    );
+  return (
+    <div className="mx-auto max-w-md px-4 py-10">
+      <h1 className="text-2xl font-bold text-zinc-900">Iniciar sesión</h1>
+      <p className="mt-1 text-sm text-zinc-600">
+        ¿No tienes cuenta?{" "}
+        <Link to="/signup" className="text-koi-amethyst hover:underline">
+          Crea una aquí
+        </Link>
+      </p>
+
+      <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+        {err && (
+          <div className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+            {err}
+          </div>
+        )}
+
+        <div>
+          <label className="block text-sm font-medium text-zinc-800">Email</label>
+          <input
+            type="email"
+            required
+            value={email}
+            onChange={(e)=>setEmail(e.target.value)}
+            className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 outline-none focus:ring-2 focus:ring-koi-amethyst"
+            placeholder="tucorreo@ejemplo.com"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-zinc-800">Contraseña</label>
+          <div className="mt-1 flex items-center gap-2">
+            <input
+              type={show ? "text" : "password"}
+              required
+              value={password}
+              onChange={(e)=>setPassword(e.target.value)}
+              className="w-full rounded-xl border border-zinc-200 px-3 py-2 outline-none focus:ring-2 focus:ring-koi-amethyst"
+              placeholder="●●●●●●●●"
+            />
+            <button
+              type="button"
+              onClick={()=>setShow(s=>!s)}
+              className="rounded-lg border border-zinc-200 px-3 py-2 text-sm text-zinc-700 hover:bg-zinc-50"
+              aria-label="Mostrar/ocultar contraseña"
+            >
+              {show ? "Ocultar" : "Ver"}
+            </button>
+          </div>
+        </div>
+
+<button
+  type="submit"
+  disabled={loading}
+  className="w-full rounded-xl bg-[#000000] px-4 py-2 text-white hover:bg-[#000000] disabled:opacity-60"
+>
+  {loading ? "Entrando..." : "Entrar"}
+</button>
+
+      </form>
+    </div>
+  );
 }

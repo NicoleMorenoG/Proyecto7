@@ -19,7 +19,7 @@ export default function Navbar() {
             to="/"
             className="text-lg font-bold tracking-tight text-zinc-900 hover:text-zinc-700"
         >
-            Nicole Koi
+            Wildflower Joyas
         </Link>
 
         {/* Links */}
@@ -28,7 +28,28 @@ export default function Navbar() {
             to="/"
             className="text-sm text-zinc-700 hover:text-koi-amethyst transition"
             >
+            Inicio
+            </Link>
+
+            <Link
+            to="/products"
+            className="text-sm text-zinc-700 hover:text-koi-amethyst transition"
+            >
             Productos
+            </Link>
+
+            <Link
+            to="/about"
+            className="text-sm text-zinc-700 hover:text-koi-amethyst transition"
+            >
+            Nosotros
+            </Link>
+
+            <Link
+            to="/profile"
+            className="text-sm text-zinc-700 hover:text-koi-amethyst transition"
+            >
+            Perfil
             </Link>
 
           {/* Carrito con contador */}

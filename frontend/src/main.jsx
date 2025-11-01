@@ -14,6 +14,9 @@ import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
 import Success from "./pages/Success.jsx";
 import Cancel from "./pages/Cancel.jsx";
+import Home from "./pages/Home.jsx";      // 👈 agregado
+import About from "./pages/About.jsx";    // 👈 agregado
+import Profile from "./pages/Profile.jsx"; // 👈 nuevo import
 
 // Context
 import { CartProvider } from "./context/CartContext.jsx";
@@ -25,9 +28,12 @@ const router = createBrowserRouter([
     element: <Layout />, // <- Layout con <Outlet/>
     // errorElement opcional: <ErrorPage />
     children: [
-      { index: true, element: <Products /> },
+      { index: true, element: <Home /> }, // 👈 Home como página inicial
+      { path: "products", element: <Products /> }, // 👈 productos
       { path: "product/:id", element: <ProductDetail /> },
       { path: "cart", element: <Cart /> },
+      { path: "about", element: <About /> }, // 👈 nueva ruta
+      { path: "profile", element: <Profile /> }, // 👈 nueva ruta perfil
       { path: "login", element: <Login /> },
       { path: "signup", element: <Signup /> },
       { path: "success", element: <Success /> },
