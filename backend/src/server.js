@@ -22,11 +22,13 @@ const __dirname = path.dirname(__filename);
 // 🔹 Middlewares
 app.use(cors({
     origin: (origin, cb) => {
-    if (!origin || allowed.includes(origin)) return cb(null, true);
+    if (!origin) return cb(null, true);            // ← permite pings/health checks
+    if (allowed.includes(origin)) return cb(null, true);
     return cb(new Error('Not allowed by CORS'));
     },
     credentials: true,
 }));
+
 app.use(express.json());
 app.use(morgan('dev'));
 app.use(express.static('public'));
