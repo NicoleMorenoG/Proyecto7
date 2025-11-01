@@ -1,0 +1,13 @@
+# node & build
+node_modules/
+dist/
+
+# env y config sensibles
+.env
+.env.*
+.env.local
+
+# editor y logs
+.DS_Store
+.vscode/
+*.log
